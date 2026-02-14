@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Love ❤️</title>
+
+<!-- Romantic Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    background: url("rose.jpeg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* Dark overlay */
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.65);
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.container {
+    margin-top: 15%;
+}
+
+/* Buttons */
+button {
+    padding: 15px 35px;
+    font-size: 1.1em;
+    border-radius: 30px;
+    border: none;
+    background: linear-gradient(45deg, #ff4e88, #ff99cc);
+    color: white;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+    box-shadow: 0 0 15px rgba(255,105,180,0.6);
+}
+button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px rgba(255,105,180,0.9);
+}
+
+/* Floating Hearts */
+.moving-heart {
+    position: absolute;
+    font-size: 45px;
+    cursor: pointer;
+    animation: rotate 6s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Fade animation */
+.fade {
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Romantic Final Text */
+.romantic-text h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 60px;
+    background: linear-gradient(45deg, #ff4e88, #ff99cc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(255,105,180,0.7);
+}
+
+.romantic-text p {
+    font-size: 1.5em;
+    max-width: 750px;
+    margin: 25px auto;
+    line-height: 1.6;
+    color: #ffe6f0;
+    text-shadow: 0 0 15px rgba(255,182,193,0.8);
+}
+
+.romantic-text h2 {
+    font-size: 32px;
+    margin-top: 30px;
+    color: #ff99cc;
+    text-shadow: 0 0 20px rgba(255,105,180,0.9);
+    animation: glowLove 2s ease-in-out infinite alternate;
+}
+
+@keyframes glowLove {
+    from { text-shadow: 0 0 10px #ff4e88; }
+    to { text-shadow: 0 0 35px #ff99cc; }
+}
+
+/* Kiss Animation */
+.kiss {
+    position: fixed;
+    font-size: 30px;
+    animation: floatKiss 6s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes floatKiss {
+    from {
+        transform: translateY(100vh) scale(0.8);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-10vh) scale(1.2);
+        opacity: 0;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="overlay"></div>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+  <source src="roja.mp3" type="audio/mp3">
+</audio>
+
+<div class="container" id="mainContent">
+    <h1 style="font-family:'Great Vibes', cursive; font-size:60px;">
+        Happy Valentine's Day My ❤️
+    </h1>
+    <button onclick="startGame()">Start 💕</button>
+</div>
+
+<script>
+
+let score = 0;
+let heartsNeeded = 6;
+let heartInterval;
+
+/* Start Game */
+function startGame(){
+    document.getElementById("bgMusic").play();
+    score = 0;
+
+    document.getElementById("mainContent").innerHTML = `
+        <div class="fade">
+        <h1 style="font-family:'Great Vibes', cursive; font-size:55px;">
+            Catch My Love ❤️
+        </h1>
+        <p>Catch ${heartsNeeded} floating hearts to unlock your surprise 😘</p>
+        <p>Score: <span id="score">0</span>/${heartsNeeded}</p>
+        </div>
+    `;
+
+    heartInterval = setInterval(createMovingHeart, 1200);
+}
+
+/* Create Floating Hearts */
+function createMovingHeart(){
+    const heart = document.createElement("div");
+    heart.classList.add("moving-heart");
+    heart.innerHTML = "❤️";
+
+    heart.style.left = Math.random() * (window.innerWidth - 50) + "px";
+    heart.style.top = "100vh";
+
+    document.body.appendChild(heart);
+
+    let position = window.innerHeight;
+
+    let floatUp = setInterval(() => {
+        position -= 1.5;
+        heart.style.top = position + "px";
+
+        if(position < -50){
+            heart.remove();
+            clearInterval(floatUp);
+        }
+    }, 20);
+
+    heart.onclick = function(){
+        score++;
+        document.getElementById("score").innerText = score;
+        heart.remove();
+        clearInterval(floatUp);
+
+        if(score >= heartsNeeded){
+            clearInterval(heartInterval);
+            showClickToSurprise();
+        }
+    }
+}
+
+/* Show Surprise Button */
+function showClickToSurprise(){
+    document.getElementById("mainContent").innerHTML = `
+        <div class="fade">
+        <h1 style="font-family:'Great Vibes', cursive; font-size:55px;">
+            You Caught My Heart ❤️
+        </h1>
+        <button onclick="showFinalMessage()">Click to See Your Surprise 💌</button>
+        </div>
+    `;
+}
+
+/* Final Romantic Message */
+function showFinalMessage(){
+    document.getElementById("mainContent").innerHTML = `
+        <div class="fade romantic-text">
+        <h1>My Forever ❤️</h1>
+        <p>
+        From the moment you came into my life, you became my happiness,
+        my peace, and my forever. Loving you is the best thing
+        that ever happened to me.
+        </p>
+        <h2>I Choose You Always Vaishu 💖</h2>
+        </div>
+    `;
+
+    startKisses();
+}
+
+/* Floating Kisses */
+function startKisses(){
+    setInterval(() => {
+        const kiss = document.createElement("div");
+        kiss.classList.add("kiss");
+        kiss.innerHTML = "💋";
+
+        kiss.style.left = Math.random() * 100 + "vw";
+        kiss.style.animationDuration = (Math.random() * 3 + 4) + "s";
+
+        document.body.appendChild(kiss);
+
+        setTimeout(() => {
+            kiss.remove();
+        }, 6000);
+
+    }, 400);
+}
+
+</script>
+
+</body>
+</html>
